@@ -113,7 +113,7 @@ class PostgreSqlPlatform extends AbstractPlatform
      */
     public function getDateSubHourExpression($date, $hours)
     {
-        return "(" . $date ." - (" . $hours . " || ' hour')::interval)";    
+        return "(" . $date ." - (" . $hours . " || ' hour')::interval)";
     }
 
     /**
@@ -222,7 +222,7 @@ class PostgreSqlPlatform extends AbstractPlatform
                 FROM
                    pg_class c, pg_namespace n
                 WHERE relkind = 'S' AND n.oid = c.relnamespace AND
-                    (n.nspname NOT LIKE 'pg_%' AND n.nspname != 'information_schema')";
+                    (n.nspname NOT LIKE 'pg_%' AND n.nspname != 'information_schema' AND has_schema_privilege(n.oid, 'usage') AND has_table_privilege(c.oid, 'select'))";
     }
 
     /**
